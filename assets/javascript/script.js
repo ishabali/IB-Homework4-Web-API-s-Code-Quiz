@@ -23,6 +23,7 @@ var questions = [{
 var currentQuestion = 0;
 var correctAnswers = 0;
 var quizOver = false;
+var initials = "";
 var highScore = 0;
 
 $(document).ready(function() {
@@ -70,7 +71,7 @@ $(document).ready(function() {
     });
 
     $('#highScores').on('click', function(){
-        alert ("Highest Quiz Score so far is: " + highScore);
+        alert (initials + "'s Highest Quiz Score so far is: " + highScore);
     });
 
 
@@ -108,6 +109,7 @@ function resetQuiz() {
 function displayScore() {
     $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
     $(document).find(".quizContainer > .result").show();
+    initials = prompt("Enter your initials: ")
     if (correctAnswers > highScore){
         highScore = correctAnswers;
     }
