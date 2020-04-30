@@ -63,7 +63,8 @@ $(document).ready(function() {
                     //                    $(document).find(".playAgainButton").toggle();
 
                     $('#iTimeShow').html('Quiz Time Completed!');
-                    $('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+                    //  $('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+                    $('#timer').html(initials + " scored: " + correctAnswers + " out of: " + questions.length);
                     c=185;
 
                     // Change the text in the next button to ask if user wants to play again
@@ -116,7 +117,8 @@ function timedCount()
 		{
 			displayScore();
 			$('#iTimeShow').html('Quiz Time Completed!');
-			$('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+//          $('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+            $('#timer').html(initials + " scored: " + correctAnswers + " out of: " + questions.length);
 			c=185;
 			// $(document).find(".preButton").text("View Answer");
             $(document).find(".nextButton").text("Play Again?");
@@ -190,7 +192,8 @@ function displayScore() {
     if (correctAnswers > highScore){
         highScore = correctAnswers;
     }
-    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    // $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    $(document).find(".quizContainer > .result").text(initials +" scored: " + correctAnswers + " out of: " + questions.length);
     $(document).find(".quizContainer > .result").show();
    
 }
