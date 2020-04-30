@@ -25,12 +25,17 @@ var correctAnswers = 0;
 var quizOver = false;
 var initials = "";
 var highScore = 0;
+var c=180;
+var t;
+
 
 $(document).ready(function() {
 
     // Display the first question
     displayCurrentQuestion();
     $(this).find(".quizMessage").hide();
+
+    timedCount();
 
     // On clicking next, display the next question
     $(this).find(".nextButton").on("click", function () {
@@ -56,13 +61,22 @@ $(document).ready(function() {
                     displayScore();
                     //                    $(document).find(".nextButton").toggle();
                     //                    $(document).find(".playAgainButton").toggle();
+
+                    $('#iTimeShow').html('Quiz Time Completed!');
+                    $('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+                    c=185;
+
                     // Change the text in the next button to ask if user wants to play again
                     $(document).find(".nextButton").text("Play Again?");
                     quizOver = true;
+                    return false;
+
                 }
             }
         } else { // quiz is over and clicked the next button (which now displays 'Play Again?'
             quizOver = false;
+            
+            $('#iTimeShow').html('Time Remaining:');
             $(document).find(".nextButton").text("Next Question");
             resetQuiz();
             displayCurrentQuestion();
@@ -70,17 +84,65 @@ $(document).ready(function() {
         }
     });
 
+    //Display High Scores with initials on clicking High Score Button    
     $('#highScores').on('click', function(){
-        alert (initials + "'s Highest Quiz Score so far is: " + highScore);
+        if (!quizOver){
+            debugger;
+            console.log(quizOver);
+            alert("Please Take the Quiz First");
+        }
+        else{
+            alert (initials + "'s Highest Quiz Score so far is: " + highScore);
+        }
     });
 
-
 });
+
+// -----------------------------------------------------------------------
+function timedCount()
+	{
+		if(c == 185) 
+		{ 
+			return false; 
+		}
+		
+		var hours = parseInt( c / 3600 ) % 24;
+		var minutes = parseInt( c / 60 ) % 60;
+		var seconds = c % 60;
+		var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);            
+		$('#timer').html(result);
+		
+		if(c == 0 )
+		{
+			displayScore();
+			$('#iTimeShow').html('Quiz Time Completed!');
+			$('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
+			c=185;
+			// $(document).find(".preButton").text("View Answer");
+            $(document).find(".nextButton").text("Play Again?");
+            quizOver = true;
+            return false;
+		}
+		
+		c = c - 1;
+		t = setTimeout(function()
+		{
+			timedCount()
+		},1000);
+	}
+
+
+
+// -----------------------------------------------------------------------
 
 // This displays the current question AND the choices
 function displayCurrentQuestion() {
 
-    console.log("In display current Question");
+    if(c == 185) { 
+        c = 180; timedCount();
+    }
+
+//    console.log("In display current Question");
 
     var question = questions[currentQuestion].question;
     var questionClass = $(document).find(".quizContainer > .question");
@@ -100,22 +162,51 @@ function displayCurrentQuestion() {
     }
 }
 
+// -----------------------------------------------------------------------
+
 function resetQuiz() {
     currentQuestion = 0;
     correctAnswers = 0;
     hideScore();
+
+    setTimeout(function()
+    {
+    //    viewResults();
+    },3000);
+
 }
 
+// -----------------------------------------------------------------------
+
 function displayScore() {
-    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
-    $(document).find(".quizContainer > .result").show();
-    initials = prompt("Enter your initials: ")
+    initials = (prompt("Enter your initials: ")).toUpperCase();
+    initials = initials.replace(/ /g, "");
+      
+    if ((initials === null)||(initials === "")||(initials.length === 0)) {
+        alert("Please enter your initials");
+        displayScore();
+        return;
+    }
     if (correctAnswers > highScore){
         highScore = correctAnswers;
     }
+    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    $(document).find(".quizContainer > .result").show();
+   
 }
+
+// -----------------------------------------------------------------------
 
 function hideScore() {
     $(document).find(".result").hide();
 }
+
+// -----------------------------------------------------------------------
+
+setTimeout(function()
+		{
+//			viewResults();
+        },3000);
+// -----------------------------------------------------------------------
+
 
